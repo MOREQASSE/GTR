@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Career Mindmap & Portfolio Engine for Mohammed Reqasse">
+    <title>Mohammed Reqasse | 2027 Engineering Odyssey</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- RemixIcons for beautiful vector icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Ambient Background Effects -->
+    <div class="ambient-bg">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Auth View -->
+    <div id="auth-view" class="view active">
+        <div class="auth-card glass-panel">
+            <div class="auth-header">
+                <i class="ri-radar-line brand-icon"></i>
+                <h2>Engineering Odyssey</h2>
+                <p>Authenticate to access the central portfolio engine.</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="input-group">
+                    <i class="ri-user-line"></i>
+                    <input type="text" id="login-username" placeholder="Username" required autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <i class="ri-lock-line"></i>
+                    <input type="password" id="login-password" placeholder="Password" required
+                        autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span>Initialize Session</span>
+                    <i class="ri-arrow-right-line"></i>
+                </button>
+                <div class="auth-footer">
+                    <span>Unregistered?</span>
+                    <a href="#" id="go-to-register">Request Access</a>
+                </div>
+            </form>
+
+            <!-- Register Form (Hidden initially) -->
+            <form id="register-form" class="hidden">
+                <div class="input-group">
+                    <i class="ri-user-add-line"></i>
+                    <input type="text" id="reg-username" placeholder="Choose Username" required autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <i class="ri-lock-password-line"></i>
+                    <input type="password" id="reg-password" placeholder="Create Password" required
+                        autocomplete="new-password">
+                </div>
+                <div class="input-group">
+                    <i class="ri-shield-check-line"></i>
+                    <input type="password" id="reg-confirm" placeholder="Confirm Password" required
+                        autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn btn-secondary">
+                    <span>provision credentials</span>
+                    <i class="ri-shield-keyhole-line"></i>
+                </button>
+                <div class="auth-footer">
+                    <span>Clearance level active?</span>
+                    <a href="#" id="go-to-login">Return to Login</a>
+                </div>
+            </form>
+
+            <div id="auth-error" class="hidden form-error"><i class="ri-error-warning-line"></i> <span
+                    id="auth-error-msg"></span></div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard View -->
+    <div id="app-view" class="view hidden">
+        <!-- Top Navigation -->
+        <header class="app-header glass-panel">
+            <div class="logo">
+                <i class="ri-radar-line"></i>
+                <div>
+                    <h1 id="header-username">Loading...</h1>
+                    <span class="subtitle" id="header-title">Candidate Outline</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button id="import-btn" class="btn-icon" title="Import Progress Data">
+                    <i class="ri-upload-cloud-2-line"></i>
+                </button>
+                <input type="file" id="import-input" accept=".json" class="hidden">
+                <button id="export-btn" class="btn-icon" title="Export Progress Data">
+                    <i class="ri-download-cloud-2-line"></i>
+                </button>
+                <div class="global-progress">
+                    <span class="progress-label">Odyssey Core Completion</span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="global-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <button id="logout-btn" class="btn-icon" title="Terminate Session">
+                    <i class="ri-shut-down-line"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <!-- Mindmap Canvas -->
+            <section class="canvas-container" id="canvas-wrapper">
+                <div class="canvas-controls glass-panel">
+                    <button id="zoom-in" title="Zoom In"><i class="ri-zoom-in-line"></i></button>
+                    <button id="zoom-out" title="Zoom Out"><i class="ri-zoom-out-line"></i></button>
+                    <button id="zoom-reset" title="Reset View"><i class="ri-focus-3-line"></i></button>
+                </div>
+                <div id="mindmap-canvas">
+                    <!-- SVG lines injected here -->
+                    <svg id="connections-layer"></svg>
+                    <!-- HTML nodes injected here -->
+                    <div id="nodes-layer"></div>
+                </div>
+            </section>
+
+            <!-- Details Sidebar -->
+            <aside class="detail-panel glass-panel hidden" id="detail-sidebar">
+                <div class="panel-header">
+                    <div>
+                        <span class="node-type" id="panel-type">Category</span>
+                        <h2 id="panel-title">Node Title</h2>
+                    </div>
+                    <button id="close-panel" class="btn-icon"><i class="ri-close-line"></i></button>
+                </div>
+
+                <div class="panel-content">
+                    <div class="node-meta" id="panel-meta">
+                        <!-- Meta info generated here -->
+                    </div>
+
+                    <div class="module-tracker">
+                        <h3><i class="ri-list-check"></i> Modules & Milestones</h3>
+                        <div class="progress-stats">
+                            <span class="pct" id="panel-pct">0%</span>
+                            <div class="mini-bar">
+                                <div class="mini-fill" id="panel-bar"></div>
+                            </div>
+                        </div>
+                        <ul id="module-list" class="checklist">
+                            <!-- Checkboxes injected here -->
+                        </ul>
+                    </div>
+
+                    <div class="action-links" id="panel-actions">
+                        <!-- Links to GitHub/Evidence injected here -->
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
