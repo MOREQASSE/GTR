@@ -21,7 +21,7 @@ const roadmapData = {
                     category: "network",
                     icon: "ri-mac-line",
                     meta: "Introduction to Networks. The fundamental skeleton of the networking career.",
-                    externalLink: { label: "View Cisco Badge", url: "#" },
+                    externalLink: { label: "Course Link", url: "https://www.netacad.com/courses/ccna-introduction-networks?courseLang=fr-FR&instance_id=3c62ab90-8ecc-457a-8c2d-f06eead85273" },
                     modules: [
                         { id: "itn-1", name: "Networking Today", completed: false },
                         { id: "itn-2", name: "Basic Switch and End Device Configuration", completed: false },
@@ -49,7 +49,7 @@ const roadmapData = {
                     category: "network",
                     icon: "ri-git-merge-line",
                     meta: "Switching, Routing, and Wireless Essentials.",
-                    externalLink: { label: "View Cisco Badge", url: "#" },
+                    externalLink: { label: "Course Link", url: "https://www.netacad.com/courses/ccna-switching-routing-wireless-essentials?courseLang=fr-FR&instance_id=bfd2b682-08fd-4d36-8406-f3338ad5c030" },
                     modules: [
                         { id: "srwe-1", name: "Basic Device Configuration", completed: false },
                         { id: "srwe-2", name: "Switching Concepts", completed: false },
@@ -76,6 +76,7 @@ const roadmapData = {
                     category: "network",
                     icon: "ri-shield-keyhole-line",
                     meta: "Enterprise Networking, Security, and Automation. The 'High-Brainpower' Zone.",
+                    externalLink: { label: "Course Link", url: "https://www.netacad.com/launch?id=efcc0ddf-a8dd-4aef-88b8-6ba2e776057e" },
                     modules: [
                         { id: "ensa-1", name: "Single-Area OSPFv2 Concepts", completed: false },
                         { id: "ensa-2", name: "Single-Area OSPFv2 Configuration", completed: false },
