@@ -103,6 +103,12 @@
                 </div>
             </div>
             <div class="nav-actions">
+                <!-- Gamification Streak Box -->
+                <div id="streak-container" class="streak-box" title="Current Daily Streak">
+                    <i class="ri-fire-fill" id="streak-icon"></i>
+                    <span id="streak-count" class="streak-text">0</span>
+                </div>
+
                 <button id="import-btn" class="btn-icon" title="Import Progress Data">
                     <i class="ri-upload-cloud-2-line"></i>
                 </button>
@@ -173,6 +179,59 @@
                 </div>
             </aside>
         </main>
+    </div>
+
+    <!-- Badges Modal -->
+    <div id="badges-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header panel-header">
+                <h2><i class="ri-medal-line" style="color: var(--accent-primary);"></i> Achievement Badges</h2>
+                <button id="close-badges" class="btn-icon"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="badges-grid" id="badges-grid">
+                    <!-- Badges will be injected here via JS -->
+                </div>
+                <div class="badge-detail hidden" id="badge-detail">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h3 id="badge-detail-title">Badge Title</h3>
+                        <span id="badge-detail-progress" style="font-weight: 600; color: #fbbf24;">0 / 0 Days</span>
+                    </div>
+                    <div class="badge-days-grid" id="badge-days-grid">
+                        <!-- Dots injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Badge Earned Pop-out Alert -->
+    <div id="badge-earned-alert" class="badge-alert hidden">
+        <div class="alert-content glass-panel">
+            <button id="close-alert-btn" class="btn-icon alert-close"><i class="ri-close-line"></i></button>
+            <div class="alert-icon-container">
+                <img id="alert-badge-img" src="" alt="Badge" class="alert-badge-img">
+            </div>
+            <div class="alert-text">
+                <h4><i class="ri-award-fill" style="color:#fbbf24;"></i> Achievement Unlocked!</h4>
+                <p>You've earned the <span id="alert-badge-name" class="highlight-gold"></span> badge for maintaining a <span id="alert-streak-days"></span>-day streak.</p>
+                <p id="alert-badge-custom-msg" style="margin-top: 8px; font-style: italic; color: #cbd5e1; border-left: 2px solid #fbbf24; padding-left: 8px;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Completion Alert -->
+    <div id="master-completion-alert" class="modal-overlay hidden">
+        <div class="modal-content glass-panel" style="text-align: center; padding: 50px 30px; border: 1px solid #fbbf24; box-shadow: 0 0 50px rgba(251,191,36,0.2);">
+            <i class="ri-vip-crown-fill" style="font-size: 5rem; color: #fbbf24; margin-bottom: 20px; text-shadow: 0 0 20px rgba(251,191,36,0.6);"></i>
+            <h2 style="color: #fbbf24; margin-bottom: 25px; font-family: var(--font-heading); font-size: 2rem;">Journey Complete</h2>
+            <p style="font-size: 1.25rem; line-height: 1.8; font-style: italic; color: #f1f5f9; font-weight: 300;">
+                "You have finished the programme.<br>You've done your part and what you can.<br>Now it rests in God's hands.<br>May Allah have mercy on us."
+            </p>
+            <button id="close-master-alert" class="btn btn-primary" style="margin-top: 40px; margin-left: auto; margin-right: auto; width: fit-content;">
+                <span>Alhamdulillah Button</span>
+            </button>
+        </div>
     </div>
 
     <script src="data.js"></script>

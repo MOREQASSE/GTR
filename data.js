@@ -137,8 +137,11 @@ const roadmapData = {
                     icon: "ri-dashboard-3-line",
                     meta: "DWDM and GPON architecture using Optisystem v7.0.",
                     modules: [
-                        { id: "opt-1", name: "Simulate long-haul fiber link", completed: false },
-                        { id: "opt-2", name: "Support Smart City Bandwidth Req.", completed: false }
+                        { id: "opt-1", name: "Design base GPON unamplified network topology", completed: false },
+                        { id: "opt-2", name: "Configure EDFA amplifiers for long-haul transmission", completed: false },
+                        { id: "opt-3", name: "Analyze Eye Diagram & Q-Factor for signal integrity", completed: false },
+                        { id: "opt-4", name: "Simulate ODoS (Optical Denial of Service) cross-talk attack", completed: false },
+                        { id: "opt-5", name: "Implement OSNR monitoring & rogue ONU isolation mitigation", completed: false }
                     ]
                 },
                 {
@@ -149,9 +152,11 @@ const roadmapData = {
                     icon: "ri-sensor-line",
                     meta: "Expanding the LoRa Smart Smoke Detector hardware project into a full system.",
                     modules: [
-                        { id: "iot-1", name: "LoRaWAN Integration", completed: false },
-                        { id: "iot-2", name: "Cloud MQTT broker integration", completed: false },
-                        { id: "iot-3", name: "Visualize real-time sensor data", completed: false }
+                        { id: "iot-1", name: "Configure ESP32/LoRa transceiver payload structure", completed: false },
+                        { id: "iot-2", name: "Register endpoint device on The Things Network (TTN)", completed: false },
+                        { id: "iot-3", name: "Deploy Mosquitto MQTT broker on cloud VPS", completed: false },
+                        { id: "iot-4", name: "Bridge TTN application server to private MQTT broker", completed: false },
+                        { id: "iot-5", name: "Build Node-RED/Grafana dashboard for sensor telemetry", completed: false }
                     ]
                 },
                 {
@@ -163,9 +168,12 @@ const roadmapData = {
                     meta: "Softwarization of telecom network (NFV/SDN). Moving to open standards (O-RAN).",
                     externalLink: { label: "LFS114 (Intro to free5GC)", url: "#" },
                     modules: [
-                        { id: "5g-1", name: "Service-Based Architecture (SBA)", completed: false },
-                        { id: "5g-2", name: "Network Slicing", completed: false },
-                        { id: "5g-3", name: "Deploy AMF, SMF, UPF in Docker/K8s", completed: false }
+                        { id: "5g-1", name: "Provision Kubernetes cluster for Service-Based Architecture", completed: false },
+                        { id: "5g-2", name: "Deploy free5GC / Open5GS via Helm charts", completed: false },
+                        { id: "5g-3", name: "Configure Access and Mobility Management Function (AMF)", completed: false },
+                        { id: "5g-4", name: "Configure Session Management Function (SMF)", completed: false },
+                        { id: "5g-5", name: "Establish User Plane Function (UPF) data routing", completed: false },
+                        { id: "5g-6", name: "Simulate UE (User Equipment) attachment using UERANSIM", completed: false }
                     ]
                 }
             ]
@@ -215,6 +223,24 @@ const roadmapData = {
                         { id: "for-1", name: "Participate in ITU CyberDrill/CCDC", completed: false },
                         { id: "for-2", name: "Write formal Incident Report", completed: false },
                         { id: "for-3", name: "Log analysis and memory dumps", completed: false }
+                    ]
+                },
+                {
+                    id: "cyb-homelab",
+                    label: "Virtual Enterprise Homelab",
+                    type: "project",
+                    category: "cyber",
+                    icon: "ri-server-line",
+                    meta: "Build, configure, and manage a zero-cost, fully virtualized enterprise-grade security operations center (SOC).",
+                    modules: [
+                        { id: "hl-1", name: "Deploy Hypervisor & Virtual Network Adapters", completed: false },
+                        { id: "hl-2", name: "Deploy & Harden DMZ RHEL Server", completed: false },
+                        { id: "hl-3", name: "Deploy vFirewall (pfSense/OPNsense) with ACLs & VPN", completed: false },
+                        { id: "hl-4", name: "Configure pfBlockerNG DNS Sinkhole", completed: false },
+                        { id: "hl-5", name: "Deploy IDS/IPS (Suricata/Snort) & Custom rules", completed: false },
+                        { id: "hl-6", name: "Deploy SIEM (Wazuh/Splunk) & Syslog Forwarding", completed: false },
+                        { id: "hl-7", name: "Execute Kali Linux Attack Simulation", completed: false },
+                        { id: "hl-8", name: "Python SOAR: Auto-ban attacker IP via API", completed: false }
                     ]
                 }
             ]

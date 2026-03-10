@@ -7,9 +7,22 @@ let isDragging = false;
 let startPos = { x: 0, y: 0 };
 let activeNodeId = null;
 let localMapData = null; // Merged data instance
+let currentStreakCount = 0;
+let lastActiveDate = null;
 
 const X_SPACING = 380;
 const Y_SPACING = 140;
+
+// Gamification Data
+const BADGES = [
+    { id: 'gladiator', name: 'Gladiator', days: 3, img: 'badges/Gladiator.jpeg', msg: "First of many , keep up the good work" },
+    { id: 'warrior', name: 'Warrior', days: 7, img: 'badges/Warrior.jpeg', msg: "You've passed a week, but darker days lay ahead" },
+    { id: 'knight', name: 'Knight', days: 14, img: 'badges/Knight.jpeg', msg: "Congratulations, I hearby knight you in the sigh of God and men" },
+    { id: 'general', name: 'General', days: 21, img: 'badges/General.jpeg', msg: "Nobody said getting a job will be easy, but a General like you should lead us to brighter days" },
+    { id: 'monarch', name: 'Monarch', days: 30, img: 'badges/Monarch.jpeg', msg: "One month of personal developement. A crown , fit for its rightfull King" },
+    { id: 'emperor', name: 'Emperor', days: 60, img: 'badges/Empror.jpeg', msg: "2 months of consecutive grind , only an Empror have the right set of balls for it" },
+    { id: 'overlord', name: 'GTR Overlord', days: 180, img: 'badges/overlord.png', msg: "Congratulations , you have obtained the final badges, but this doesn't mean the journey is over. Now is the time to get some real bread" }
+];
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -176,7 +189,9 @@ function startSession(username) {
 // --- DASHBOARD CORE ---
 function initDashboard() {
     loadUserData();
+    loadStreakData();
     setupCanvasControls();
+    setupBadgeControls();
     
     // Initial draw
     calculateTreeLayout(localMapData, 150, 50); // Recursive calculate & store positions
@@ -187,6 +202,194 @@ function initDashboard() {
     window.addEventListener('resize', () => {
         renderMindmap(); // Updates SVG lines if container changes
     });
+}
+
+// --- GAMIFICATION LOGIC ---
+function loadStreakData() {
+    const streakInfo = JSON.parse(localStorage.getItem(`streak_${currentUser}`) || '{"count": 0, "lastDate": null}');
+    currentStreakCount = streakInfo.count || 0;
+    lastActiveDate = streakInfo.lastDate || null;
+    
+    // Evaluate if streak is lost upon load
+    if (lastActiveDate) {
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const last = new Date(lastActiveDate);
+        last.setHours(0,0,0,0);
+        
+        const diffTime = today - last;
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        
+        // If they missed yesterday entirely
+        if (diffDays > 1) {
+            currentStreakCount = 0;
+            // Provide them a clean slate starting today if they do a task later
+        }
+    }
+    updateStreakUI();
+}
+
+function recordTaskCompletion() {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    
+    let previousStreak = currentStreakCount;
+
+    if (!lastActiveDate) {
+        currentStreakCount = 1;
+        lastActiveDate = today.toISOString();
+    } else {
+        const last = new Date(lastActiveDate);
+        last.setHours(0,0,0,0);
+        
+        const diffTime = today - last;
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 1) {
+            // Maintained consecutive streak
+            currentStreakCount++;
+            lastActiveDate = today.toISOString();
+        } else if (diffDays > 1) {
+            // Streak was broken, starting fresh
+            currentStreakCount = 1;
+            lastActiveDate = today.toISOString();
+        }
+        // if diffDays === 0, they already did a task today, streak is maintained, count remains same.
+    }
+    
+    localStorage.setItem(`streak_${currentUser}`, JSON.stringify({
+        count: currentStreakCount,
+        lastDate: lastActiveDate
+    }));
+    
+    updateStreakUI();
+    checkBadgeUnlockStatus(previousStreak, currentStreakCount);
+}
+
+function checkBadgeUnlockStatus(oldStreak, newStreak) {
+    if (newStreak <= oldStreak) return; // Only trigger on streak increment
+
+    BADGES.forEach(badge => {
+        // If the new streak EXACTLY equals the badge requirement, it's newly unlocked today
+        if (newStreak === badge.days) {
+            showBadgeAlert(badge);
+        }
+    });
+}
+
+function showBadgeAlert(badge) {
+    const alertEl = document.getElementById('badge-earned-alert');
+    document.getElementById('alert-badge-img').src = badge.img;
+    document.getElementById('alert-badge-img').onerror = function() { // fallback
+        this.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23333' width='100' height='100'/><text fill='white' x='50' y='50' dominant-baseline='middle' text-anchor='middle' font-size='12'>Badge</text></svg>";
+    };
+    document.getElementById('alert-badge-name').textContent = badge.name;
+    document.getElementById('alert-streak-days').textContent = badge.days;
+    document.getElementById('alert-badge-custom-msg').textContent = `"${badge.msg}"`;
+    
+    alertEl.classList.remove('hidden');
+    // Force reflow for animation
+    void alertEl.offsetWidth;
+    alertEl.classList.add('show');
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        alertEl.classList.remove('show');
+        setTimeout(() => alertEl.classList.add('hidden'), 500); // wait for transition
+    }, 5000);
+}
+
+function updateStreakUI() {
+    const countEl = document.getElementById('streak-count');
+    const iconEl = document.getElementById('streak-icon');
+    countEl.textContent = currentStreakCount;
+    
+    if (currentStreakCount > 0 && lastActiveDate) {
+        // Evaluate active status today vs yesterday
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const last = new Date(lastActiveDate);
+        last.setHours(0,0,0,0);
+        
+        const diffTime = today - last;
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) {
+            // Completed today = glowing fire
+            iconEl.classList.add('fire-active');
+        } else if (diffDays === 1) {
+            // Pending completion today = still keeps count but loses fire
+            iconEl.classList.remove('fire-active');
+            iconEl.style.color = '#94a3b8'; 
+        } else {
+            iconEl.classList.remove('fire-active');
+            iconEl.style.color = '#475569';
+        }
+    } else {
+        iconEl.classList.remove('fire-active');
+        iconEl.style.color = '#475569';
+    }
+}
+
+function setupBadgeControls() {
+    document.getElementById('streak-container').addEventListener('click', () => {
+        renderBadges();
+        document.getElementById('badge-detail').classList.add('hidden');
+        document.getElementById('badges-modal').classList.remove('hidden');
+    });
+
+    document.getElementById('close-badges').addEventListener('click', () => {
+        document.getElementById('badges-modal').classList.add('hidden');
+    });
+
+    document.getElementById('close-alert-btn').addEventListener('click', () => {
+        const alertEl = document.getElementById('badge-earned-alert');
+        alertEl.classList.remove('show');
+        setTimeout(() => alertEl.classList.add('hidden'), 500);
+    });
+
+    document.getElementById('close-master-alert').addEventListener('click', () => {
+        document.getElementById('master-completion-alert').classList.add('hidden');
+    });
+}
+
+function renderBadges() {
+    const grid = document.getElementById('badges-grid');
+    grid.innerHTML = '';
+    
+    BADGES.forEach(badge => {
+        const isUnlocked = currentStreakCount >= badge.days;
+        
+        const el = document.createElement('div');
+        el.className = `badge-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+        el.innerHTML = `
+            <img src="${badge.img}" alt="${badge.name}" class="badge-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23333\\' width=\\'100\\' height=\\'100\\'/><text fill=\\'white\\' x=\\'50\\' y=\\'50\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-size=\\'12\\'>Badge</text></svg>'">
+            <div class="badge-name">${badge.name}</div>
+        `;
+        
+        el.addEventListener('click', () => showBadgeDetail(badge));
+        grid.appendChild(el);
+    });
+}
+
+function showBadgeDetail(badge) {
+    const detailEl = document.getElementById('badge-detail');
+    detailEl.classList.remove('hidden');
+    
+    document.getElementById('badge-detail-title').textContent = badge.name;
+    
+    let daysCompleted = Math.min(currentStreakCount, badge.days);
+    
+    document.getElementById('badge-detail-progress').textContent = `${daysCompleted} / ${badge.days} Days`;
+    
+    const daysGrid = document.getElementById('badge-days-grid');
+    daysGrid.innerHTML = '';
+    
+    for (let i = 0; i < badge.days; i++) {
+        const dot = document.createElement('div');
+        dot.className = `day-dot ${i < daysCompleted ? 'gold' : 'silhouette'}`;
+        daysGrid.appendChild(dot);
+    }
 }
 
 function loadUserData() {
@@ -525,8 +728,16 @@ function updateGlobalProgress() {
     // Change bar color if 100%
     if(rootProgress === 100) {
         fill.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+        
+        // Master Completion Check
+        if (!localStorage.getItem(`master_completed_${currentUser}`)) {
+            localStorage.setItem(`master_completed_${currentUser}`, 'true');
+            document.getElementById('master-completion-alert').classList.remove('hidden');
+        }
     } else {
         fill.style.background = 'linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))';
+        // If they untick something, they can re-trigger it
+        localStorage.removeItem(`master_completed_${currentUser}`);
     }
 }
 
@@ -582,8 +793,14 @@ function openDetailPanel(node) {
             
             // Toggle Logic
             li.addEventListener('click', () => {
+                const wasCompleted = mod.completed;
                 mod.completed = !mod.completed;
                 li.classList.toggle('completed', mod.completed);
+                
+                // Track Streak if transitioning from incomplete to complete
+                if (!wasCompleted && mod.completed) {
+                    recordTaskCompletion();
+                }
                 
                 // Re-calculate & Re-render exactly
                 saveUserData();
