@@ -189,6 +189,13 @@
                 <button id="close-badges" class="btn-icon"><i class="ri-close-line"></i></button>
             </div>
             <div class="modal-body">
+                <p
+                    style="text-align: center; font-size: 0.9rem; color: #94a3b8; margin-bottom: 20px; line-height: 1.5;">
+                    <i class="ri-information-line" style="color: var(--accent-primary);"></i>
+                    <strong>How Streaks Work:</strong> Every single completed task adds +1 to your glowing streak.
+                    However, if a full calendar day rolls over (midnight to midnight) without a single task being
+                    completed, your streak will reset to 0.
+                </p>
                 <div class="badges-grid" id="badges-grid">
                     <!-- Badges will be injected here via JS -->
                 </div>
@@ -215,7 +222,8 @@
             <div class="alert-text">
                 <h4><i class="ri-award-fill" style="color:#fbbf24;"></i> Achievement Unlocked!</h4>
                 <p>You've earned the <span id="alert-badge-name" class="highlight-gold"></span> badge for maintaining a
-                    <span id="alert-streak-days"></span>-day streak.</p>
+                    <span id="alert-streak-days"></span>-day streak.
+                </p>
                 <p id="alert-badge-custom-msg"
                     style="margin-top: 8px; font-style: italic; color: #cbd5e1; border-left: 2px solid #fbbf24; padding-left: 8px;">
                 </p>
