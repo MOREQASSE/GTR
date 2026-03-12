@@ -214,21 +214,49 @@
             </div>
             <div class="alert-text">
                 <h4><i class="ri-award-fill" style="color:#fbbf24;"></i> Achievement Unlocked!</h4>
-                <p>You've earned the <span id="alert-badge-name" class="highlight-gold"></span> badge for maintaining a <span id="alert-streak-days"></span>-day streak.</p>
-                <p id="alert-badge-custom-msg" style="margin-top: 8px; font-style: italic; color: #cbd5e1; border-left: 2px solid #fbbf24; padding-left: 8px;"></p>
+                <p>You've earned the <span id="alert-badge-name" class="highlight-gold"></span> badge for maintaining a
+                    <span id="alert-streak-days"></span>-day streak.</p>
+                <p id="alert-badge-custom-msg"
+                    style="margin-top: 8px; font-style: italic; color: #cbd5e1; border-left: 2px solid #fbbf24; padding-left: 8px;">
+                </p>
             </div>
+        </div>
+    </div>
+
+    <!-- 10 PM Warning Alert -->
+    <div id="ten-pm-warning" class="modal-overlay hidden">
+        <div class="modal-content glass-panel"
+            style="text-align: center; padding: 40px 30px; border: 1px solid #f43f5e; box-shadow: 0 0 40px rgba(244, 63, 94, 0.2);">
+            <i class="ri-alert-fill"
+                style="font-size: 4rem; color: #f43f5e; margin-bottom: 20px; text-shadow: 0 0 15px rgba(244, 63, 94, 0.6);"></i>
+            <h2 style="color: #f43f5e; margin-bottom: 15px; font-family: var(--font-heading); font-size: 1.8rem;">Streak
+                at Risk!</h2>
+            <p style="font-size: 1.1rem; line-height: 1.6; color: #f8fafc;">
+                "Get your shit together man, it's almost the end of the day."<br>
+                <span style="display:block; margin-top: 10px; font-size: 0.9rem; color: #94a3b8;">You haven't completed
+                    any tasks today. Your streak will reset at midnight.</span>
+            </p>
+            <button id="close-warning-btn" class="btn btn-primary"
+                style="margin-top: 30px; margin-left: auto; margin-right: auto; width: fit-content; background: #f43f5e; border-color: #f43f5e; color: white;">
+                <span>I'm on it!</span>
+            </button>
         </div>
     </div>
 
     <!-- Master Completion Alert -->
     <div id="master-completion-alert" class="modal-overlay hidden">
-        <div class="modal-content glass-panel" style="text-align: center; padding: 50px 30px; border: 1px solid #fbbf24; box-shadow: 0 0 50px rgba(251,191,36,0.2);">
-            <i class="ri-vip-crown-fill" style="font-size: 5rem; color: #fbbf24; margin-bottom: 20px; text-shadow: 0 0 20px rgba(251,191,36,0.6);"></i>
-            <h2 style="color: #fbbf24; margin-bottom: 25px; font-family: var(--font-heading); font-size: 2rem;">Journey Complete</h2>
+        <div class="modal-content glass-panel"
+            style="text-align: center; padding: 50px 30px; border: 1px solid #fbbf24; box-shadow: 0 0 50px rgba(251,191,36,0.2);">
+            <i class="ri-vip-crown-fill"
+                style="font-size: 5rem; color: #fbbf24; margin-bottom: 20px; text-shadow: 0 0 20px rgba(251,191,36,0.6);"></i>
+            <h2 style="color: #fbbf24; margin-bottom: 25px; font-family: var(--font-heading); font-size: 2rem;">Journey
+                Complete</h2>
             <p style="font-size: 1.25rem; line-height: 1.8; font-style: italic; color: #f1f5f9; font-weight: 300;">
-                "You have finished the programme.<br>You've done your part and what you can.<br>Now it rests in God's hands.<br>May Allah have mercy on us."
+                "You have finished the programme.<br>You've done your part and what you can.<br>Now it rests in God's
+                hands.<br>May Allah have mercy on us."
             </p>
-            <button id="close-master-alert" class="btn btn-primary" style="margin-top: 40px; margin-left: auto; margin-right: auto; width: fit-content;">
+            <button id="close-master-alert" class="btn btn-primary"
+                style="margin-top: 40px; margin-left: auto; margin-right: auto; width: fit-content;">
                 <span>Alhamdulillah Button</span>
             </button>
         </div>
